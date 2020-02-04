@@ -4,3 +4,5 @@
 #include "Modules/ModuleManager.h"
 
 IMPLEMENT_PRIMARY_GAME_MODULE( FDefaultGameModuleImpl, AwesomeShooter, "AwesomeShooter" );
+
+DEFINE_LOG_CATEGORY(LogAS);
