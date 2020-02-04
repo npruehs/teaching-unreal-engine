@@ -17,4 +17,6 @@ private:
 	void InputStrafeRight(float AxisValue);
 	void InputTurn(float AxisValue);
 	void InputLookUp(float AxisValue);
+	
+	void InputJump();
 };

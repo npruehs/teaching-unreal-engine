@@ -1,5 +1,7 @@
 #include "ASPlayerController.h"
 
+#include "GameFramework/Character.h"
+
 void AASPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
@@ -13,6 +15,8 @@ void AASPlayerController::SetupInputComponent()
 	InputComponent->BindAxis(TEXT("StrafeRight"), this, &AASPlayerController::InputStrafeRight);
 	InputComponent->BindAxis(TEXT("Turn"), this, &AASPlayerController::InputTurn);
 	InputComponent->BindAxis(TEXT("LookUp"), this, &AASPlayerController::InputLookUp);
+
+	InputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &AASPlayerController::InputJump);
 }
 
 void AASPlayerController::InputMoveForward(float AxisValue)
@@ -53,4 +57,15 @@ void AASPlayerController::InputTurn(float AxisValue)
 void AASPlayerController::InputLookUp(float AxisValue)
 {
 	AddPitchInput(AxisValue);
+}
+
+void AASPlayerController::InputJump()
+{
+	if (!IsValid(GetCharacter()))
+	{
+		return;
+	}
+
+	// Perform jump.
+	GetCharacter()->Jump();
 }
