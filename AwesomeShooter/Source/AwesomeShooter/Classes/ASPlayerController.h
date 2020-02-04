@@ -15,7 +15,6 @@ public:
 private:
 	void InputMoveForward(float AxisValue);
 	void InputStrafeRight(float AxisValue);
-
-	/** Gets the current control rotation, ignoring pitch and roll. */
-	inline FRotator GetYawRotation() const;
+	void InputTurn(float AxisValue);
+	void InputLookUp(float AxisValue);
 };

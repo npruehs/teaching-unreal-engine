@@ -1,7 +1,5 @@
 #include "ASPlayerController.h"
 
-#include "Kismet/KismetMathLibrary.h"
-
 void AASPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
@@ -13,6 +11,8 @@ void AASPlayerController::SetupInputComponent()
 
 	InputComponent->BindAxis(TEXT("MoveForward"), this, &AASPlayerController::InputMoveForward);
 	InputComponent->BindAxis(TEXT("StrafeRight"), this, &AASPlayerController::InputStrafeRight);
+	InputComponent->BindAxis(TEXT("Turn"), this, &AASPlayerController::InputTurn);
+	InputComponent->BindAxis(TEXT("LookUp"), this, &AASPlayerController::InputLookUp);
 }
 
 void AASPlayerController::InputMoveForward(float AxisValue)
@@ -23,12 +23,8 @@ void AASPlayerController::InputMoveForward(float AxisValue)
 		return;
 	}
 
-	// We're interested in character yaw, only, for WSAD movement.
-	// Otherwise, we'd probable start flying pretty soon.
-	FRotator YawRotation = GetYawRotation();
-
 	// Scale movement by input axis value.
-	FVector Forward = UKismetMathLibrary::GetForwardVector(YawRotation);
+	FVector Forward = GetPawn()->GetActorForwardVector();
 
 	// Apply input.
 	GetPawn()->AddMovementInput(Forward, AxisValue);
@@ -42,18 +38,19 @@ void AASPlayerController::InputStrafeRight(float AxisValue)
 		return;
 	}
 
-	// We're interested in character yaw, only, for WSAD movement.
-	// Otherwise, we'd probable start flying pretty soon.
-	FRotator YawRotation = GetYawRotation();
-
 	// Scale movement by input axis value.
-	FVector Right = UKismetMathLibrary::GetRightVector(YawRotation);
+	FVector Right = GetPawn()->GetActorRightVector();
 
 	// Apply input.
 	GetPawn()->AddMovementInput(Right, AxisValue);
 }
 
-FRotator AASPlayerController::GetYawRotation() const
+void AASPlayerController::InputTurn(float AxisValue)
 {
-	return FRotator(0, 0, GetControlRotation().Yaw);
+	AddYawInput(AxisValue);
+}
+
+void AASPlayerController::InputLookUp(float AxisValue)
+{
+	AddPitchInput(AxisValue);
 }
