@@ -1,11 +1,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/GameState.h"
+#include "GameFramework/GameStateBase.h"
 #include "ASGameState.generated.h"
 
 UCLASS()
-class AWESOMESHOOTER_API AASGameState : public AGameState
+class AWESOMESHOOTER_API AASGameState : public AGameStateBase
 {
     GENERATED_BODY()
 
