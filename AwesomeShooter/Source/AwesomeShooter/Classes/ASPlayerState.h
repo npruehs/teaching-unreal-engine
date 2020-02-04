@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CoreMinimal.h"
+#include "AwesomeShooter.h"
 #include "GameFramework/PlayerState.h"
 #include "ASPlayerState.generated.h"
 

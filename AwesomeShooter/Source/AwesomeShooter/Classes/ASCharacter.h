@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CoreMinimal.h"
+#include "AwesomeShooter.h"
 #include "GameFramework/Character.h"
 #include "ASCharacter.generated.h"
 
