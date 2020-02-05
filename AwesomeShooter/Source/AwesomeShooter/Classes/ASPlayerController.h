@@ -19,4 +19,5 @@ private:
 	void InputLookUp(float AxisValue);
 	
 	void InputJump();
+    void InputFire();
 };

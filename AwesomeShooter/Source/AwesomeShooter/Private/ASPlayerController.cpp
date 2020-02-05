@@ -1,6 +1,9 @@
 #include "ASPlayerController.h"
 
+#include "Engine/World.h"
 #include "GameFramework/Character.h"
+
+#include "ASWeaponComponent.h"
 
 void AASPlayerController::SetupInputComponent()
 {
@@ -17,6 +20,7 @@ void AASPlayerController::SetupInputComponent()
 	InputComponent->BindAxis(TEXT("LookUp"), this, &AASPlayerController::InputLookUp);
 
 	InputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &AASPlayerController::InputJump);
+    InputComponent->BindAction(TEXT("Fire"), IE_Pressed, this, &AASPlayerController::InputFire);
 }
 
 void AASPlayerController::InputMoveForward(float AxisValue)
@@ -68,4 +72,37 @@ void AASPlayerController::InputJump()
 
 	// Perform jump.
 	GetCharacter()->Jump();
+}
+
+void AASPlayerController::InputFire()
+{
+    // Early out if we haven't got a valid pawn.
+    if (!IsValid(GetPawn()))
+    {
+        return;
+    }
+
+    // Early out if we haven't got an attached weapon.
+    UASWeaponComponent* WeaponComponent = GetPawn()->FindComponentByClass<UASWeaponComponent>();
+
+    if (!IsValid(WeaponComponent))
+    {
+        return;
+    }
+
+    // Early out if the weapon doesn't have a projectile.
+    TSubclassOf<AActor> ProjectileClass = WeaponComponent->GetProjectileClass();
+
+    if (ProjectileClass == nullptr)
+    {
+        UE_LOG(LogAS, Warning, TEXT("Unable to fire, weapon component of %s has no projectile class set up."), *GetPawn()->GetName());
+        return;
+    }
+
+    // Spawn projectile in front of pawn.
+    FVector ProjectileLocation = GetPawn()->GetActorLocation() +
+        GetPawn()->GetActorForwardVector() * WeaponComponent->GetProjectileSpawnOffset();
+    FRotator ProjectileRotation = GetPawn()->GetActorRotation();
+
+    AActor* Projectile = GetWorld()->SpawnActor<AActor>(ProjectileClass, ProjectileLocation, ProjectileRotation);
 }
