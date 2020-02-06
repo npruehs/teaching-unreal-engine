@@ -1,7 +1,6 @@
 #include "ASHealthComponent.h"
 
-#include "GameFramework/Controller.h"
-#include "GameFramework/PlayerState.h"
+#include "ASGameMode.h"
 
 void UASHealthComponent::BeginPlay()
 {
@@ -57,18 +56,12 @@ void UASHealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, con
 			IsValid(DamageCauser) ? *DamageCauser->GetName() : TEXT("nullptr"),
 			IsValid(InstigatedBy) ? *InstigatedBy->GetName() : TEXT("nullptr"));
 
-		// Increase score.
-		if (IsValid(InstigatedBy))
+		// Notify game mode.
+		AASGameMode* GameMode = GetWorld()->GetAuthGameMode<AASGameMode>();
+
+		if (IsValid(GameMode))
 		{
-			APlayerState* PlayerState = InstigatedBy->GetPlayerState<APlayerState>();
-
-			if (IsValid(PlayerState))
-			{
-				++PlayerState->Score;
-
-				UE_LOG(LogAS, Log, TEXT("Increased score of %s (%s) to %f."), *PlayerState->GetName(),
-					*PlayerState->GetPlayerName(), PlayerState->Score);
-			}
+			GameMode->OnActorDestroyed(Owner, InstigatedBy);
 		}
 	}
 }
