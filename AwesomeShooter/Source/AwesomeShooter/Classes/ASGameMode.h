@@ -13,6 +13,8 @@ class AWESOMESHOOTER_API AASGameMode : public AGameModeBase
 	GENERATED_BODY()
 	
 public:
+	AASGameMode();
+
 	/** Notifies this game mode that the specified actor has been destroyed by the passed instigator. */
 	void OnActorDestroyed(AActor* Actor, AController* Instigator);
 

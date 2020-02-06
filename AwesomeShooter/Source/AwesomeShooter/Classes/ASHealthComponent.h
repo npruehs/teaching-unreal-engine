@@ -15,6 +15,8 @@ class AWESOMESHOOTER_API UASHealthComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
+	UASHealthComponent();
+
 	virtual void BeginPlay() override;
 
 	/** Gets how much damage the actor can still sustain before being destroyed. */

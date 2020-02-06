@@ -2,6 +2,12 @@
 
 #include "ASGameMode.h"
 
+UASHealthComponent::UASHealthComponent()
+{
+	// Set reasonable default values.
+	MaximumHealth = 100.0f;
+}
+
 void UASHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();

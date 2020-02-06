@@ -14,6 +14,8 @@ class AWESOMESHOOTER_API UASCollisionDamageComponent : public UActorComponent
     GENERATED_BODY()
 
 public:
+	UASCollisionDamageComponent();
+
     virtual void BeginPlay() override;
 
 private:

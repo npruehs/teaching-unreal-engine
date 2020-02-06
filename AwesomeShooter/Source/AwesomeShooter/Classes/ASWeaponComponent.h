@@ -12,6 +12,8 @@ class AWESOMESHOOTER_API UASWeaponComponent : public UActorComponent
     GENERATED_BODY()
 
 public:
+	UASWeaponComponent();
+
     /** Gets the class of the projectile to fire. */
     TSubclassOf<AActor> GetProjectileClass() const;
 

@@ -3,6 +3,12 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/PlayerState.h"
 
+AASGameMode::AASGameMode()
+{
+	// Set reasonable default values.
+	ScoreLimit = 10.0f;
+}
+
 void AASGameMode::OnActorDestroyed(AActor* Actor, AController* InstigatedBy)
 {
 	// Increase score.

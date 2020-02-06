@@ -3,6 +3,12 @@
 #include "Components/PrimitiveComponent.h"
 #include "GameFramework/Actor.h"
 
+UASCollisionDamageComponent::UASCollisionDamageComponent()
+{
+	// Set reasonable default values.
+	Damage = 10.0f;
+}
+
 void UASCollisionDamageComponent::BeginPlay()
 {
     Super::BeginPlay();
