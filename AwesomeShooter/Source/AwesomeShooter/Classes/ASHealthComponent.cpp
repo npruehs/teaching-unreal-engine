@@ -50,6 +50,9 @@ void UASHealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, con
 	// Reduce health.
 	CurrentHealth -= Damage;
 
+	// Clamp resulting value (especially necessary for potential healing).
+	CurrentHealth = FMath::Clamp(CurrentHealth, 0.0f, MaximumHealth);
+
 	UE_LOG(LogAS, Log, TEXT("%s has taken %f damage, reducing health to %f."), *Owner->GetName(), Damage, CurrentHealth);
 
 	// Check if we're dead now.
