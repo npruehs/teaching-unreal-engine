@@ -20,4 +20,5 @@ private:
 	
 	void InputJump();
     void InputFire();
+	void InputRespawn();
 };

@@ -21,6 +21,7 @@ void AASPlayerController::SetupInputComponent()
 
 	InputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &AASPlayerController::InputJump);
     InputComponent->BindAction(TEXT("Fire"), IE_Pressed, this, &AASPlayerController::InputFire);
+	InputComponent->BindAction(TEXT("Respawn"), IE_Pressed, this, &AASPlayerController::InputRespawn);
 }
 
 void AASPlayerController::InputMoveForward(float AxisValue)
@@ -110,4 +111,16 @@ void AASPlayerController::InputFire()
 
     AActor* Projectile = GetWorld()->SpawnActor<AActor>(ProjectileClass, ProjectileLocation, ProjectileRotation,
 		ActorSpawnParameters);
+}
+
+void AASPlayerController::InputRespawn()
+{
+	// Early out if we HAVE got a valid pawn.
+	if (IsValid(GetPawn()))
+	{
+		return;
+	}
+
+	// Tell server we want to respawn.
+	ServerRestartPlayer();
 }
