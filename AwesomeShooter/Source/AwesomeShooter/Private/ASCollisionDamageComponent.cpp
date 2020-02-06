@@ -28,5 +28,18 @@ void UASCollisionDamageComponent::BeginPlay()
 void UASCollisionDamageComponent::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
     UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-    UE_LOG(LogAS, Log, TEXT("Overlap!"));
+	if (!IsValid(GetOwner()) || !IsValid(OtherActor))
+	{
+		return;
+	}
+
+	// Deal damage.
+	AActor* DamageCauser = GetOwner();
+	APawn* InstigatorPawn = IsValid(DamageCauser) ? DamageCauser->GetInstigator() : nullptr;
+	AController* Instigator = IsValid(InstigatorPawn) ? InstigatorPawn->GetController() : nullptr;
+
+	OtherActor->TakeDamage(Damage, FDamageEvent(), Instigator, DamageCauser);
+	
+	// Destroy projectile.
+	GetOwner()->Destroy();
 }

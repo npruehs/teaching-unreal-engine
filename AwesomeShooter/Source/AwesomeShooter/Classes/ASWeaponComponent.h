@@ -5,7 +5,7 @@
 #include "GameFramework/Actor.h"
 #include "ASWeaponComponent.generated.h"
 
-/** Adds a weapon to the actor, that fires projetiles. */
+/** Adds a weapon to the actor, that fires projectiles. */
 UCLASS(meta = (BlueprintSpawnableComponent))
 class AWESOMESHOOTER_API UASWeaponComponent : public UActorComponent
 {

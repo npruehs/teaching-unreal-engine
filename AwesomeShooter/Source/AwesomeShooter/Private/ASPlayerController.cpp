@@ -104,5 +104,10 @@ void AASPlayerController::InputFire()
         GetPawn()->GetActorForwardVector() * WeaponComponent->GetProjectileSpawnOffset();
     FRotator ProjectileRotation = GetPawn()->GetActorRotation();
 
-    AActor* Projectile = GetWorld()->SpawnActor<AActor>(ProjectileClass, ProjectileLocation, ProjectileRotation);
+	// Store instigator for damage events.
+	FActorSpawnParameters ActorSpawnParameters;
+	ActorSpawnParameters.Instigator = GetPawn();
+
+    AActor* Projectile = GetWorld()->SpawnActor<AActor>(ProjectileClass, ProjectileLocation, ProjectileRotation,
+		ActorSpawnParameters);
 }
