@@ -1,5 +1,7 @@
 #include "ASGameMode.h"
 
+#include "Engine/World.h"
+
 #include "GameFramework/Controller.h"
 #include "GameFramework/PlayerState.h"
 
@@ -7,6 +9,14 @@ AASGameMode::AASGameMode()
 {
 	// Set reasonable default values.
 	ScoreLimit = 10.0f;
+}
+
+void AASGameMode::StartPlay()
+{
+    Super::StartPlay();
+
+    // Spawn single AI player for now.
+    SpawnAIPlayer();
 }
 
 void AASGameMode::OnActorDestroyed(AActor* Actor, AController* InstigatedBy)
@@ -31,6 +41,33 @@ void AASGameMode::OnActorDestroyed(AActor* Actor, AController* InstigatedBy)
 
 	// Check if game is over.
 	CheckGameOver(InstigatedBy);
+}
+
+void AASGameMode::SpawnAIPlayer()
+{
+    // Check AI controller class.
+    if (AIControllerClass == nullptr)
+    {
+        UE_LOG(LogAS, Error, TEXT("Failed to spawn AI player: No AIControllerClass set for %s."), *GetName());
+        return;
+    }
+
+    // Spawn AI.
+    FActorSpawnParameters SpawnInfo;
+    SpawnInfo.Instigator = Instigator;
+    SpawnInfo.ObjectFlags |= RF_Transient; // We never want to save player controllers into a map
+
+    AASAIController* NewAI = GetWorld()->SpawnActor<AASAIController>(
+        AIControllerClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnInfo);
+
+    if (!IsValid(NewAI))
+    {
+        UE_LOG(LogAS, Error, TEXT("Failed to spawn AI %s."), *AIControllerClass->GetName());
+        return;
+    }
+
+    // Start AI (find player start, spawn pawn, etc.)
+    RestartPlayer(NewAI);
 }
 
 void AASGameMode::CheckGameOver(AController* Player)
