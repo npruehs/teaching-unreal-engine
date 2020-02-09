@@ -1,9 +1,8 @@
 #include "ASPlayerController.h"
 
-#include "Engine/World.h"
 #include "GameFramework/Character.h"
 
-#include "ASWeaponComponent.h"
+#include "ASCharacter.h"
 
 void AASPlayerController::SetupInputComponent()
 {
@@ -77,40 +76,15 @@ void AASPlayerController::InputJump()
 
 void AASPlayerController::InputFire()
 {
-    // Early out if we haven't got a valid pawn.
-    if (!IsValid(GetPawn()))
+    // Early out if we haven't got a valid character.
+    AASCharacter* ASCharacter = Cast<AASCharacter>(GetCharacter());
+
+    if (!IsValid(ASCharacter))
     {
         return;
     }
 
-    // Early out if we haven't got an attached weapon.
-    UASWeaponComponent* WeaponComponent = GetPawn()->FindComponentByClass<UASWeaponComponent>();
-
-    if (!IsValid(WeaponComponent))
-    {
-        return;
-    }
-
-    // Early out if the weapon doesn't have a projectile.
-    TSubclassOf<AActor> ProjectileClass = WeaponComponent->GetProjectileClass();
-
-    if (ProjectileClass == nullptr)
-    {
-        UE_LOG(LogAS, Warning, TEXT("Unable to fire, weapon component of %s has no projectile class set up."), *GetPawn()->GetName());
-        return;
-    }
-
-    // Spawn projectile in front of pawn.
-    FVector ProjectileLocation = GetPawn()->GetActorLocation() +
-        GetPawn()->GetActorForwardVector() * WeaponComponent->GetProjectileSpawnOffset();
-    FRotator ProjectileRotation = GetPawn()->GetActorRotation();
-
-	// Store instigator for damage events.
-	FActorSpawnParameters ActorSpawnParameters;
-	ActorSpawnParameters.Instigator = GetPawn();
-
-    AActor* Projectile = GetWorld()->SpawnActor<AActor>(ProjectileClass, ProjectileLocation, ProjectileRotation,
-		ActorSpawnParameters);
+    ASCharacter->FireWeapon();
 }
 
 void AASPlayerController::InputRespawn()
