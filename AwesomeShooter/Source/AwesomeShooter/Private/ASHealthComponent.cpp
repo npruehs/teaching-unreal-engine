@@ -31,6 +31,11 @@ float UASHealthComponent::GetCurrentHealth() const
 	return CurrentHealth;
 }
 
+float UASHealthComponent::GetCurrentHealthRatio() const
+{
+    return CurrentHealth / MaximumHealth;
+}
+
 void UASHealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,
 	AController* InstigatedBy, AActor* DamageCauser)
 {

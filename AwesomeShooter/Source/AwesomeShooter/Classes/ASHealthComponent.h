@@ -23,6 +23,10 @@ public:
 	UFUNCTION(BlueprintPure)
 	float GetCurrentHealth() const;
 
+    /** Gets how much damage the actor can still sustain before being destroyed, as value between 0 and 1. */
+    UFUNCTION(BlueprintPure)
+    float GetCurrentHealthRatio() const;
+
 private:
 	/** How much damage the actor can still sustain before being destroyed. */
 	UPROPERTY()
