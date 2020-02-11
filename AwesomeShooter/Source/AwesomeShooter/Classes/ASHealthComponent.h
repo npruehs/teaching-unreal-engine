@@ -8,6 +8,9 @@ class AActor;
 class AController;
 class UDamageType;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FASHealthComponentHealthChangedSignature, AActor*, Actor, float, OldHealth, float, NewHealth);
+
+
 /** Adds a health value to the actor, destroying it when depleted. */
 UCLASS(meta = (BlueprintSpawnableComponent))
 class AWESOMESHOOTER_API UASHealthComponent : public UActorComponent
@@ -26,6 +29,10 @@ public:
     /** Gets how much damage the actor can still sustain before being destroyed, as value between 0 and 1. */
     UFUNCTION(BlueprintPure)
     float GetCurrentHealthRatio() const;
+
+	/** Event when the actor has taken damage or was healed. */
+	UPROPERTY(BlueprintAssignable)
+	FASHealthComponentHealthChangedSignature OnHealthChanged;
 
 private:
 	/** How much damage the actor can still sustain before being destroyed. */

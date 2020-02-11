@@ -24,6 +24,9 @@ void UASHealthComponent::BeginPlay()
 
 	// Set initial health.
 	CurrentHealth = MaximumHealth;
+
+	// Notify listeners.
+	OnHealthChanged.Broadcast(Owner, 0.0f, CurrentHealth);
 }
 
 float UASHealthComponent::GetCurrentHealth() const
@@ -53,12 +56,16 @@ void UASHealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, con
 	}
 
 	// Reduce health.
+	float OldHealth = CurrentHealth;
 	CurrentHealth -= Damage;
 
 	// Clamp resulting value (especially necessary for potential healing).
 	CurrentHealth = FMath::Clamp(CurrentHealth, 0.0f, MaximumHealth);
 
 	UE_LOG(LogAS, Log, TEXT("%s has taken %f damage, reducing health to %f."), *Owner->GetName(), Damage, CurrentHealth);
+
+	// Notify listeners.
+	OnHealthChanged.Broadcast(Owner, OldHealth, CurrentHealth);
 
 	// Check if we're dead now.
 	if (CurrentHealth <= 0.0f)
