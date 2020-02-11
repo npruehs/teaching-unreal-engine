@@ -66,6 +66,14 @@ void AASGameMode::SpawnAIPlayer()
         return;
     }
 
+	// Set player name.
+	APlayerState* AIPlayerState = NewAI->GetPlayerState<APlayerState>();
+
+	if (IsValid(AIPlayerState))
+	{
+		AIPlayerState->SetPlayerName(TEXT("Bot"));
+	}
+
     // Start AI (find player start, spawn pawn, etc.)
     RestartPlayer(NewAI);
 }
