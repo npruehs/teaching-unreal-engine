@@ -1,6 +1,8 @@
 #include "ASCharacter.h"
 
 #include "Engine/World.h"
+#include "GameFramework/ProjectileMovementComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 #include "ASWeaponComponent.h"
 
@@ -34,4 +36,19 @@ void AASCharacter::FireWeapon()
 
     AActor* Projectile = GetWorld()->SpawnActor<AActor>(ProjectileClass, ProjectileLocation, ProjectileRotation,
         ActorSpawnParameters);
+
+	if (!IsValid(Projectile))
+	{
+		UE_LOG(LogAS, Error, TEXT("Failed to spawn projectile %s for %s."), *ProjectileClass->GetName(), *GetName());
+		return;
+	}
+
+	// Set direction.
+	UProjectileMovementComponent* ProjectileMovementComponent = Projectile->FindComponentByClass<UProjectileMovementComponent>();
+
+	if (IsValid(ProjectileMovementComponent))
+	{
+		ProjectileMovementComponent->Velocity =
+			UKismetMathLibrary::GetForwardVector(GetControlRotation()) * ProjectileMovementComponent->InitialSpeed;
+	}
 }
