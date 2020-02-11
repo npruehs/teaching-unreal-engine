@@ -12,6 +12,8 @@ class AWESOMESHOOTER_API AASAIController : public AAIController
     GENERATED_BODY()
 
 public:
+	AASAIController();
+
     virtual void OnPossess(APawn* InPawn) override;
 
 private:

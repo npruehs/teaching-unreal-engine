@@ -2,6 +2,12 @@
 
 #include "BehaviorTree/BehaviorTree.h"
 
+AASAIController::AASAIController()
+{
+	// We want player states for our AI, to allow them to score and win.
+	bWantsPlayerState = true;
+}
+
 void AASAIController::OnPossess(APawn* InPawn)
 {
     Super::OnPossess(InPawn);
