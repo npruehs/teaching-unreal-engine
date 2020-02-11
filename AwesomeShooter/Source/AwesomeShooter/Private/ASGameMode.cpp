@@ -5,11 +5,7 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/PlayerState.h"
 
-AASGameMode::AASGameMode()
-{
-	// Set reasonable default values.
-	ScoreLimit = 10.0f;
-}
+#include "ASGameState.h"
 
 void AASGameMode::StartPlay()
 {
@@ -92,7 +88,12 @@ void AASGameMode::CheckGameOver(AController* Player)
 		return;
 	}
 
-	if (PlayerState->Score >= ScoreLimit)
+	if (!IsValid(GetGameState<AASGameState>()))
+	{
+		return;
+	}
+
+	if (PlayerState->Score >= GetGameState<AASGameState>()->GetScoreLimit())
 	{
 		UE_LOG(LogAS, Log, TEXT("Score limit hit! Player %s (%s) won the match with a score of %f."), *PlayerState->GetName(),
 			*PlayerState->GetPlayerName(), PlayerState->Score);
