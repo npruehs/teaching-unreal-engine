@@ -12,6 +12,21 @@ class AWESOMESHOOTER_API AASPlayerController : public APlayerController
 public:
 	virtual void SetupInputComponent() override;
 
+protected:
+	/** Event when the player wants to see the scoreboard. */
+	virtual void NotifyOnShowScoreboard();
+
+	/** Event when the player no longer wants to see the scoreboard. */
+	virtual void NotifyOnHideScoreboard();
+
+	/** Event when the player wants to see the scoreboard. */
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnShowScoreboard"))
+	void ReceiveOnShowScoreboard();
+
+	/** Event when the player no longer wants to see the scoreboard. */
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "OnHideScoreboard"))
+	void ReceiveOnHideScoreboard();
+
 private:
 	void InputMoveForward(float AxisValue);
 	void InputStrafeRight(float AxisValue);
@@ -21,4 +36,7 @@ private:
 	void InputJump();
     void InputFire();
 	void InputRespawn();
+
+	void InputShowScoreboard();
+	void InputHideScoreboard();
 };

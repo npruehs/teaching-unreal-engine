@@ -21,6 +21,19 @@ void AASPlayerController::SetupInputComponent()
 	InputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &AASPlayerController::InputJump);
     InputComponent->BindAction(TEXT("Fire"), IE_Pressed, this, &AASPlayerController::InputFire);
 	InputComponent->BindAction(TEXT("Respawn"), IE_Pressed, this, &AASPlayerController::InputRespawn);
+
+	InputComponent->BindAction(TEXT("ShowScoreboard"), IE_Pressed, this, &AASPlayerController::InputShowScoreboard);
+	InputComponent->BindAction(TEXT("ShowScoreboard"), IE_Released, this, &AASPlayerController::InputHideScoreboard);
+}
+
+void AASPlayerController::NotifyOnShowScoreboard()
+{
+	ReceiveOnShowScoreboard();
+}
+
+void AASPlayerController::NotifyOnHideScoreboard()
+{
+	ReceiveOnHideScoreboard();
 }
 
 void AASPlayerController::InputMoveForward(float AxisValue)
@@ -97,4 +110,14 @@ void AASPlayerController::InputRespawn()
 
 	// Tell server we want to respawn.
 	ServerRestartPlayer();
+}
+
+void AASPlayerController::InputShowScoreboard()
+{
+	NotifyOnShowScoreboard();
+}
+
+void AASPlayerController::InputHideScoreboard()
+{
+	NotifyOnHideScoreboard();
 }
