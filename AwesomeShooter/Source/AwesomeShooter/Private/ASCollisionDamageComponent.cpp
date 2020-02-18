@@ -2,6 +2,8 @@
 
 #include "Components/PrimitiveComponent.h"
 #include "GameFramework/Actor.h"
+#include "Kismet/GameplayStatics.h"
+#include "Particles/ParticleSystem.h"
 
 UASCollisionDamageComponent::UASCollisionDamageComponent()
 {
@@ -34,18 +36,31 @@ void UASCollisionDamageComponent::BeginPlay()
 void UASCollisionDamageComponent::OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
     UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (!IsValid(GetOwner()) || !IsValid(OtherActor))
+	AActor* Owner = GetOwner();
+
+	if (!IsValid(Owner))
+	{
+		return;
+	}
+
+	if (!IsValid(OtherActor))
 	{
 		return;
 	}
 
 	// Deal damage.
-	AActor* DamageCauser = GetOwner();
+	AActor* DamageCauser = Owner;
 	APawn* InstigatorPawn = IsValid(DamageCauser) ? DamageCauser->GetInstigator() : nullptr;
 	AController* Instigator = IsValid(InstigatorPawn) ? InstigatorPawn->GetController() : nullptr;
 
 	OtherActor->TakeDamage(Damage, FDamageEvent(), Instigator, DamageCauser);
 	
+	// Spawn effects.
+	if (IsValid(ImpactEffect))
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactEffect, Owner->GetActorLocation());
+	}
+
 	// Destroy projectile.
-	GetOwner()->Destroy();
+	Owner->Destroy();
 }

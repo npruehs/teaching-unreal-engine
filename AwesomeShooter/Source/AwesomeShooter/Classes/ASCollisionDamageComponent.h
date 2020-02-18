@@ -5,6 +5,7 @@
 #include "ASCollisionDamageComponent.generated.h"
 
 class AActor;
+class UParticleSystem;
 class UPrimitiveComponent;
 
 /** Deals damage to any actor colliding with the actor. */
@@ -22,6 +23,10 @@ private:
 	/** How much damage to deal to any actor we collide with. */
 	UPROPERTY(EditDefaultsOnly)
 	float Damage;
+
+	/** Particle system to spawn when colliding. */
+	UPROPERTY(EditDefaultsOnly)
+	UParticleSystem* ImpactEffect;
 
     UFUNCTION()
     void OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
