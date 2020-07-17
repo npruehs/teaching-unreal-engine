@@ -24,11 +24,11 @@ void UASCollisionDamageComponent::BeginPlay()
     }
 
     // Listen for overlap events of all primitive components of the actor.
-    TArray<UActorComponent*> ActorComponents = Owner->GetComponentsByClass(UPrimitiveComponent::StaticClass());
+	TArray<UPrimitiveComponent*> PrimitiveComponents;
+    Owner->GetComponents(PrimitiveComponents);
 
-    for (UActorComponent* ActorComponent : ActorComponents)
+    for (UPrimitiveComponent* PrimitiveComponent : PrimitiveComponents)
     {
-        UPrimitiveComponent* PrimitiveComponent = Cast<UPrimitiveComponent>(ActorComponent);
         PrimitiveComponent->OnComponentBeginOverlap.AddDynamic(this, &UASCollisionDamageComponent::OnComponentBeginOverlap);
     }
 }

@@ -10,5 +10,7 @@ public class AwesomeShooterEditorTarget : TargetRules
 		Type = TargetType.Editor;
 
 		ExtraModuleNames.AddRange( new string[] { "AwesomeShooter" } );
+
+        DefaultBuildSettings = BuildSettingsVersion.V2;
 	}
 }

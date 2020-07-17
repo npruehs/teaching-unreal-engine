@@ -30,10 +30,10 @@ void AASGameMode::OnActorDestroyed(AActor* Actor, AController* InstigatedBy)
 		return;
 	}
 
-	++PlayerState->Score;
+	PlayerState->SetScore(PlayerState->GetScore() + 1);
 
 	UE_LOG(LogAS, Log, TEXT("Increased score of %s (%s) to %f."), *PlayerState->GetName(),
-		*PlayerState->GetPlayerName(), PlayerState->Score);
+		*PlayerState->GetPlayerName(), PlayerState->GetScore());
 
 	// Check if game is over.
 	CheckGameOver(InstigatedBy);
@@ -50,7 +50,7 @@ void AASGameMode::SpawnAIPlayer()
 
     // Spawn AI.
     FActorSpawnParameters SpawnInfo;
-    SpawnInfo.Instigator = Instigator;
+    SpawnInfo.Instigator = GetInstigator();
     SpawnInfo.ObjectFlags |= RF_Transient; // We never want to save player controllers into a map
 
     AASAIController* NewAI = GetWorld()->SpawnActor<AASAIController>(
@@ -93,9 +93,9 @@ void AASGameMode::CheckGameOver(AController* Player)
 		return;
 	}
 
-	if (PlayerState->Score >= GetGameState<AASGameState>()->GetScoreLimit())
+	if (PlayerState->GetScore() >= GetGameState<AASGameState>()->GetScoreLimit())
 	{
 		UE_LOG(LogAS, Log, TEXT("Score limit hit! Player %s (%s) won the match with a score of %f."), *PlayerState->GetName(),
-			*PlayerState->GetPlayerName(), PlayerState->Score);
+			*PlayerState->GetPlayerName(), PlayerState->GetScore());
 	}
 }
